@@ -1,0 +1,91 @@
+graph TB
+    subgraph "Frontend Layer"
+        A[React Application]
+        B[Redux State Management]
+        C[WebSocket Client]
+    end
+    
+    subgraph "API Gateway"
+        D[Django REST API]
+        E[WebSocket Server]
+        F[Authentication]
+    end
+    
+    subgraph "Business Logic"
+        G[Video Processing Orchestrator]
+        H[Conversation Manager]
+        I[Insight Generator]
+        J[Celery Task Queue]
+    end
+    
+    subgraph "AI/ML Pipeline"
+        K[Video Analysis Pipeline]
+        L[Object Detection YOLO]
+        M[Activity Recognition]
+        N[Event Classification]
+        O[Conversation Engine]
+        P[NLP Processor]
+    end
+    
+    subgraph "Data Layer"
+        Q[(PostgreSQL Database)]
+        R[(Redis Cache)]
+        S[File Storage]
+        T[(Vector Database)]
+    end
+    
+    subgraph "External Services"
+        U[Cloud AI APIs]
+        V[CDN]
+        W[Monitoring]
+    end
+    
+    A --> D
+    A --> E
+    B --> A
+    C --> E
+    
+    D --> G
+    D --> H
+    E --> H
+    F --> D
+    
+    G --> J
+    H --> J
+    I --> J
+    
+    J --> K
+    J --> O
+    K --> L
+    K --> M
+    K --> N
+    O --> P
+    
+    G --> Q
+    H --> Q
+    I --> Q
+    G --> R
+    H --> R
+    G --> S
+    K --> S
+    O --> T
+    I --> T
+    
+    K --> U
+    G --> V
+    G --> W
+    
+    classDef frontend fill:#e0f2fe
+    classDef api fill:#f3e5f5
+    classDef business fill:#e8f5e8
+    classDef ai fill:#fff3e0
+    classDef data fill:#ffebee
+    classDef external fill:#f5f5f5
+    
+    class A,B,C frontend
+    class D,E,F api
+    class G,H,I,J business
+    class K,L,M,N,O,P ai
+    class Q,R,S,T data
+    class U,V,W external
+

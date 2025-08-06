@@ -1,0 +1,163 @@
+@startuml Visual_Insight_Assistant_Architecture
+
+!theme aws-orange
+title Visual Insight Assistant - System Architecture
+
+skinparam backgroundColor #f8fafc
+skinparam defaultFontName Inter
+skinparam defaultFontSize 12
+
+package "Frontend Layer" as frontend #e0f2fe {
+  component "React App" as react {
+    [Video Upload Component]
+    [Chat Interface]
+    [Analysis Dashboard]
+    [Real-time Updates]
+  }
+  
+  component "State Management" as state {
+    [Redux Store]
+    [WebSocket Client]
+    [Local Storage]
+  }
+}
+
+package "API Gateway Layer" as gateway #f3e5f5 {
+  component "Django REST API" as api {
+    [Authentication Middleware]
+    [Rate Limiting]
+    [API Versioning]
+    [Request Validation]
+  }
+  
+  component "WebSocket Server" as ws {
+    [Real-time Communication]
+    [Event Broadcasting]
+    [Connection Management]
+  }
+}
+
+package "Business Logic Layer" as business #e8f5e8 {
+  component "Django Backend" as django {
+    [User Management]
+    [Video Processing Orchestrator]
+    [Conversation Manager]
+    [Insight Generator]
+  }
+  
+  component "Task Queue" as queue {
+    [Celery Workers]
+    [Background Jobs]
+    [Async Processing]
+  }
+}
+
+package "AI/ML Processing Layer" as ai #fff3e0 {
+  component "Video Analysis Pipeline" as pipeline {
+    [Frame Extractor]
+    [Object Detector (YOLO)]
+    [Activity Recognizer]
+    [Event Classifier]
+  }
+  
+  component "Conversation Engine" as conversation {
+    [NLP Processor]
+    [Context Manager]
+    [Response Generator]
+    [Query Interpreter]
+  }
+  
+  component "Insight Engine" as insights {
+    [Summarization Model]
+    [Anomaly Detector]
+    [Pattern Analyzer]
+    [Alert Generator]
+  }
+}
+
+package "Data Layer" as data #ffebee {
+  database "PostgreSQL" as postgres {
+    [Users]
+    [Videos]
+    [Events]
+    [Conversations]
+    [Insights]
+  }
+  
+  database "Redis Cache" as redis {
+    [Session Data]
+    [Temporary Results]
+    [Real-time Data]
+  }
+  
+  storage "File Storage" as storage {
+    [Video Files]
+    [Processed Frames]
+    [Generated Assets]
+  }
+  
+  database "Vector DB" as vector {
+    [Embeddings]
+    [Semantic Search]
+    [Context Vectors]
+  }
+}
+
+package "External Services" as external #f5f5f5 {
+  cloud "Cloud AI APIs" as cloudai
+  cloud "CDN" as cdn
+  cloud "Monitoring" as monitoring
+}
+
+' Connections
+react --> api : HTTP/HTTPS
+react --> ws : WebSocket
+state --> react : State Updates
+
+api --> django : Business Logic
+ws --> django : Real-time Events
+django --> queue : Async Tasks
+
+queue --> pipeline : Video Processing
+queue --> conversation : Chat Processing
+queue --> insights : Insight Generation
+
+pipeline --> postgres : Store Results
+conversation --> postgres : Save Context
+insights --> postgres : Store Insights
+
+django --> redis : Cache Operations
+pipeline --> redis : Temporary Data
+conversation --> redis : Session Data
+
+django --> storage : File Operations
+pipeline --> storage : Video/Frame Access
+insights --> storage : Asset Generation
+
+conversation --> vector : Semantic Search
+insights --> vector : Context Retrieval
+
+pipeline --> cloudai : Enhanced Models
+django --> cdn : Content Delivery
+django --> monitoring : Metrics/Logs
+
+note right of ai
+  AI Pipeline processes videos through
+  multiple stages:
+  1. Frame extraction & preprocessing
+  2. Object detection & tracking
+  3. Activity recognition
+  4. Event classification
+  5. Insight generation
+end note
+
+note left of data
+  Data layer provides:
+  - Structured data (PostgreSQL)
+  - Fast caching (Redis)
+  - File storage (Cloud/Local)
+  - Vector search (Embeddings)
+end note
+
+@enduml
+

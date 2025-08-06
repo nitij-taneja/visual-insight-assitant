@@ -1,0 +1,9 @@
+Django>=4.2,<5.0
+python-decouple
+djangorestframework
+channels
+daphne
+psycopg2-binary
+redis
+celery
+django-cors-headers
